@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct markApp: App {
+    
+    @StateObject private var previewModel: PreviewModel  = PreviewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(previewModel: previewModel)
+                .frame(minWidth: 550, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .center)
+            
         }
+        .commands{
+            ViewCommands(previewModel: previewModel)
+        }
+        .windowStyle(HiddenTitleBarWindowStyle())
+        
     }
 }
