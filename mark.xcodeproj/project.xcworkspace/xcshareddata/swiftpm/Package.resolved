@@ -47,6 +47,15 @@
         }
       },
       {
+        "package": "SimpleToast",
+        "repositoryURL": "https://github.com/sanzaru/SimpleToast.git",
+        "state": {
+          "branch": null,
+          "revision": "1bc531af60fc0a1494fdc02a52f03662aa9a183a",
+          "version": "0.6.2"
+        }
+      },
+      {
         "package": "SwiftCommonMark",
         "repositoryURL": "https://github.com/gonzalezreal/SwiftCommonMark",
         "state": {

@@ -10,16 +10,17 @@ import SwiftUI
 @main
 struct markApp: App {
     
-    @StateObject private var previewModel: PreviewModel  = PreviewModel()
+    @StateObject private var markState: MarkState  = MarkState()
     
     var body: some Scene {
         WindowGroup {
-            ContentView(previewModel: previewModel)
+            ContentView(markState: markState)
                 .frame(minWidth: 550, maxWidth: .infinity, minHeight: 300, maxHeight: .infinity, alignment: .center)
             
         }
         .commands{
-            ViewCommands(previewModel: previewModel)
+            FileCommands(markState: markState)
+            ViewCommands(markState: markState)
         }
         .windowStyle(HiddenTitleBarWindowStyle())
         

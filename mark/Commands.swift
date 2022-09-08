@@ -8,12 +8,32 @@
 import SwiftUI
 
 struct ViewCommands: Commands {
-    @StateObject var previewModel: PreviewModel
+    @StateObject var markState: MarkState
     var body: some Commands {
         CommandGroup(after: .toolbar) {
             Button("Toggle Preview") {
-                previewModel.toggle()
+                markState.togglePreview()
             }.keyboardShortcut("k",modifiers: [.command])
-            }
+        }
+    }
+}
+
+struct FileCommands: Commands {
+    @StateObject var markState: MarkState
+    var body: some Commands {
+        CommandGroup(after: .newItem) {
+            Button("Open File") {
+                markState.triggerOpenDialog()
+            }.keyboardShortcut("o",modifiers: [.command])
+            
+            Button("Save File"){
+                markState.triggerSaveFile()
+            }.keyboardShortcut("s",modifiers: [.command])
+            
+            Button("Save File As"){
+                markState.triggerSaveFileAs()
+            }.keyboardShortcut("s",modifiers: [.command,.shift])
+            
+        }
     }
 }

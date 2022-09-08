@@ -14,6 +14,7 @@
 		1F7B44DA28BB88E400A213E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B44D928BB88E400A213E3 /* ContentView.swift */; };
 		1F7B44DC28BB88E500A213E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B44DB28BB88E500A213E3 /* Assets.xcassets */; };
 		1F7B44DF28BB88E500A213E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B44DE28BB88E500A213E3 /* Preview Assets.xcassets */; };
+		1FFD0E3B28CA200E0019C666 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = 1FFD0E3A28CA200E0019C666 /* SimpleToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1F5702D128BC0700006F3309 /* HighlightedTextEditor in Frameworks */,
+				1FFD0E3B28CA200E0019C666 /* SimpleToast in Frameworks */,
 				1F1E410828BB9FD500A66EF2 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +97,7 @@
 			packageProductDependencies = (
 				1F1E410728BB9FD500A66EF2 /* MarkdownUI */,
 				1F5702D028BC0700006F3309 /* HighlightedTextEditor */,
+				1FFD0E3A28CA200E0019C666 /* SimpleToast */,
 			);
 			productName = mark;
 			productReference = 1F7B44D428BB88E400A213E3 /* mark.app */;
@@ -127,6 +130,7 @@
 			packageReferences = (
 				1F1E410628BB9FD500A66EF2 /* XCRemoteSwiftPackageReference "MarkdownUI" */,
 				1F5702CF28BC0700006F3309 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */,
+				1FFD0E3928CA200E0019C666 /* XCRemoteSwiftPackageReference "SimpleToast" */,
 			);
 			productRefGroup = 1F7B44D528BB88E400A213E3 /* Products */;
 			projectDirPath = "";
@@ -377,6 +381,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		1FFD0E3928CA200E0019C666 /* XCRemoteSwiftPackageReference "SimpleToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sanzaru/SimpleToast.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.6.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -389,6 +401,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 1F5702CF28BC0700006F3309 /* XCRemoteSwiftPackageReference "HighlightedTextEditor" */;
 			productName = HighlightedTextEditor;
+		};
+		1FFD0E3A28CA200E0019C666 /* SimpleToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1FFD0E3928CA200E0019C666 /* XCRemoteSwiftPackageReference "SimpleToast" */;
+			productName = SimpleToast;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -8,6 +8,7 @@
 import SwiftUI
 import MarkdownUI
 import HighlightedTextEditor
+import SimpleToast
 
 // add another transition to the
 // AnyTransition class to allow
@@ -39,25 +40,132 @@ You can type in markdown here
 // Shared Observable object to share state
 // between this content view and the main
 // app
-public class PreviewModel: ObservableObject {
+public class MarkState: ObservableObject {
     @Published var preview: Bool = false
+    @Published var filename: String = "Untitled.md"
+    @Published var filePath: String = ""
+    @Published var content: String = ""
+    @Published var savePath: String = ""
+    @Published var showToast: Bool = false
+    @Published var toastMessage: String = ""
     
-    func toggle(){
+    
+    func showToast(message:String) {
+        self.showToast = true
+        self.toastMessage = message
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            self.showToast = false
+            self.toastMessage = ""
+        }
+        
+        
+    }
+    
+    func togglePreview(){
         withAnimation{
             self.preview = !self.preview
         }
     }
+    
+    func updateContent(content:String){
+        self.content = content
+    }
+    
+    func setFileName(url:String, name:String){
+        self.filename = name
+        self.filePath = url
+    }
+    
+    func triggerOpenDialog(){
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.canChooseDirectories = false
+        if panel.runModal() == .OK {
+            self.filePath = panel.url?.path ?? ""
+            self.savePath = panel.url?.path ?? ""
+            self.filename = panel.url?.lastPathComponent ?? ""
+            do {
+                if let fileurl = panel.url {
+                    self.content = try String(contentsOf: fileurl, encoding: .utf8)
+                    panel.close()
+                }
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
+    func triggerSaveDialog(onComplete: (()->Void)? = nil){
+        let savePanel = NSSavePanel()
+        savePanel.canCreateDirectories = true
+        savePanel.showsTagField = false
+        savePanel.nameFieldStringValue = self.filename
+        savePanel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.modalPanelWindow)))
+        savePanel.begin { (result) in
+            if result.rawValue == NSApplication.ModalResponse.OK.rawValue {
+                if let savePath = savePanel.url?.path {
+                    self.savePath = savePath
+                    savePanel.close()
+                    onComplete?()
+                }
+                
+            }
+        }
+    }
+    
+    func triggerSaveFileAs(){
+        self.triggerSaveDialog(){
+            if(self.savePath.isEmpty){
+                return
+            }
+            
+            self.writeFileToSavePath()
+        }
+    }
+    
+    func triggerSaveFile(){
+        if self.savePath.isEmpty {
+            self.triggerSaveDialog(){
+                if(self.savePath.isEmpty){
+                    return
+                }
+                self.writeFileToSavePath()
+            }
+        }
+        self.writeFileToSavePath()
+    }
+    
+    func writeFileToSavePath() {
+        do {
+            
+            try self.content.write(to: URL(fileURLWithPath: savePath), atomically: true, encoding: .utf8)
+            
+            self.showToast(message:"File Saved")
+            
+        }catch{
+            print(error)
+        }
+    }
+    
+    
 }
 
 
 
 struct ContentView: View {
-    @State private var fullText: String = defaultText
-    @StateObject var previewModel: PreviewModel
+    @StateObject var markState: MarkState
+    @State var filename = "Untitled.md"
+    @State var input: String = ""
     
     // duplicated local state to make sure the animation timing
     // syncs with the one from the above observable
     @State private var localPreview: Bool = false
+    
+    
+    private let toastOptions = SimpleToastOptions(
+        alignment: .bottom,
+        hideAfter: 2.5
+    )
     
     
     var body: some View {
@@ -66,9 +174,18 @@ struct ContentView: View {
             VStack
             {
                 TextEditor(
-                    text: $fullText)
+                    text: $input
+                )
                     .font(Font.custom("Hermit", size: 13.5))
                     .padding(10)
+                    .onChange(of: input) { newValue in
+                        markState.updateContent(content: newValue)
+                    }
+                    .onReceive(markState.$content){(val) in
+                        if val == input {return}
+                        input = val
+                        return
+                    }
                 //TODO: add in options to select font in settings
             }
             .frame(minWidth: 0, maxWidth: .infinity)
@@ -78,7 +195,7 @@ struct ContentView: View {
                 ScrollView{
                     VStack {
                         Markdown(
-                            fullText
+                            markState.content
                         ).markdownStyle(
                             MarkdownStyle(
                                 font: .custom("Hermit", size: 13.5),
@@ -95,9 +212,21 @@ struct ContentView: View {
                 .transition(.sameEdgeSlide)
             }
         }
-        .onReceive(previewModel.$preview){ (val) in
+        .onReceive(markState.$preview){ (val) in
             localPreview = val
-            
+        }
+        .simpleToast(isPresented: $markState.showToast, options: toastOptions) {
+            HStack {
+                HStack{
+                    Text(markState.toastMessage)
+                        .padding()
+                }
+                .padding()
+                .background(Color.black.opacity(0.95))
+                .foregroundColor(Color.white)
+                .cornerRadius(6)
+            }
+            .padding()
         }
         .frame(minWidth: 0, maxWidth: .infinity)
         .toolbar(){
@@ -106,7 +235,7 @@ struct ContentView: View {
             }
             ToolbarItem {
                 Button("Toggle Preview") {
-                    previewModel.toggle()
+                    markState.togglePreview()
                 }
             }
         }
