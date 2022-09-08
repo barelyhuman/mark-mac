@@ -1,0 +1,16 @@
+#!/bin/bash 
+
+set -euxo pipefail
+
+rm -rf ./build
+
+rbenv local
+
+bundle exec fastlane build
+
+VERSION=$(cat .commitlog.release | xargs)
+
+npx appdmg create-dmg.json "./build/mark-$VERSION.dmg"
+
+
+

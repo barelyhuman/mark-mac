@@ -1,0 +1,9 @@
+output_directory("./build")
+scheme("mark")
+clean(true)
+output_name("mark")
+destination("generic/platform=macOS")
+export_options({
+    method: "development", 
+})
+  
