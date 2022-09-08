@@ -37,125 +37,13 @@ var defaultText:String = """
 You can type in markdown here
 """
 
-// Shared Observable object to share state
-// between this content view and the main
-// app
-public class MarkState: ObservableObject {
-    @Published var preview: Bool = false
-    @Published var filename: String = "Untitled.md"
-    @Published var filePath: String = ""
-    @Published var content: String = ""
-    @Published var savePath: String = ""
-    @Published var showToast: Bool = false
-    @Published var toastMessage: String = ""
-    
-    
-    func showToast(message:String) {
-        self.showToast = true
-        self.toastMessage = message
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            self.showToast = false
-            self.toastMessage = ""
-        }
-        
-        
-    }
-    
-    func togglePreview(){
-        withAnimation{
-            self.preview = !self.preview
-        }
-    }
-    
-    func updateContent(content:String){
-        self.content = content
-    }
-    
-    func setFileName(url:String, name:String){
-        self.filename = name
-        self.filePath = url
-    }
-    
-    func triggerOpenDialog(){
-        let panel = NSOpenPanel()
-        panel.allowsMultipleSelection = false
-        panel.canChooseDirectories = false
-        if panel.runModal() == .OK {
-            self.filePath = panel.url?.path ?? ""
-            self.savePath = panel.url?.path ?? ""
-            self.filename = panel.url?.lastPathComponent ?? ""
-            do {
-                if let fileurl = panel.url {
-                    self.content = try String(contentsOf: fileurl, encoding: .utf8)
-                    panel.close()
-                }
-            }catch{
-                print(error)
-            }
-        }
-    }
-    
-    func triggerSaveDialog(onComplete: (()->Void)? = nil){
-        let savePanel = NSSavePanel()
-        savePanel.canCreateDirectories = true
-        savePanel.showsTagField = false
-        savePanel.nameFieldStringValue = self.filename
-        savePanel.level = NSWindow.Level(rawValue: Int(CGWindowLevelForKey(.modalPanelWindow)))
-        savePanel.begin { (result) in
-            if result.rawValue == NSApplication.ModalResponse.OK.rawValue {
-                if let savePath = savePanel.url?.path {
-                    self.savePath = savePath
-                    savePanel.close()
-                    onComplete?()
-                }
-                
-            }
-        }
-    }
-    
-    func triggerSaveFileAs(){
-        self.triggerSaveDialog(){
-            if(self.savePath.isEmpty){
-                return
-            }
-            
-            self.writeFileToSavePath()
-        }
-    }
-    
-    func triggerSaveFile(){
-        if self.savePath.isEmpty {
-            self.triggerSaveDialog(){
-                if(self.savePath.isEmpty){
-                    return
-                }
-                self.writeFileToSavePath()
-            }
-        }
-        self.writeFileToSavePath()
-    }
-    
-    func writeFileToSavePath() {
-        do {
-            
-            try self.content.write(to: URL(fileURLWithPath: savePath), atomically: true, encoding: .utf8)
-            
-            self.showToast(message:"File Saved")
-            
-        }catch{
-            print(error)
-        }
-    }
-    
-    
-}
-
 
 
 struct ContentView: View {
     @StateObject var markState: MarkState
     @State var filename = "Untitled.md"
     @State var input: String = ""
+    @StateObject var appDelegate: AppDelegate
     
     // duplicated local state to make sure the animation timing
     // syncs with the one from the above observable
@@ -182,6 +70,13 @@ struct ContentView: View {
                     .padding(10)
                     .onChange(of: input) { newValue in
                         markState.updateContent(content: newValue)
+                    }
+                    .onReceive(appDelegate.$fileToOpen){(val) in
+                        if val.isEmpty
+                        {return }
+                        let url = URL(fileURLWithPath: val)
+                        markState.openFile(path: url)
+                        return
                     }
                     .onReceive(markState.$content){(val) in
                         if val == input {return}

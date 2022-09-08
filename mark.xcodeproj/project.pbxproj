@@ -8,16 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		1F1E410828BB9FD500A66EF2 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1F1E410728BB9FD500A66EF2 /* MarkdownUI */; };
+		1F26DA1428CA762200C78E28 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F26DA1328CA762200C78E28 /* AppDelegate.swift */; };
 		1F5702CE28BC02BB006F3309 /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5702CD28BC02BB006F3309 /* Commands.swift */; };
 		1F5702D128BC0700006F3309 /* HighlightedTextEditor in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5702D028BC0700006F3309 /* HighlightedTextEditor */; };
 		1F7B44D828BB88E400A213E3 /* markApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B44D728BB88E400A213E3 /* markApp.swift */; };
 		1F7B44DA28BB88E400A213E3 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B44D928BB88E400A213E3 /* ContentView.swift */; };
 		1F7B44DC28BB88E500A213E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B44DB28BB88E500A213E3 /* Assets.xcassets */; };
 		1F7B44DF28BB88E500A213E3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B44DE28BB88E500A213E3 /* Preview Assets.xcassets */; };
+		1F87D2EA28CA742100A42D12 /* MarkState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F87D2E928CA742000A42D12 /* MarkState.swift */; };
 		1FFD0E3B28CA200E0019C666 /* SimpleToast in Frameworks */ = {isa = PBXBuildFile; productRef = 1FFD0E3A28CA200E0019C666 /* SimpleToast */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F26DA1328CA762200C78E28 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1F5702CD28BC02BB006F3309 /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		1F7B44D428BB88E400A213E3 /* mark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1F7B44D728BB88E400A213E3 /* markApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = markApp.swift; sourceTree = "<group>"; };
@@ -25,6 +28,8 @@
 		1F7B44DB28BB88E500A213E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1F7B44DE28BB88E500A213E3 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		1F7B44E028BB88E500A213E3 /* mark.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = mark.entitlements; sourceTree = "<group>"; };
+		1F87D2E928CA742000A42D12 /* MarkState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkState.swift; sourceTree = "<group>"; };
+		1FB03CEA28CA5DD5003F9D09 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,12 +65,15 @@
 		1F7B44D628BB88E400A213E3 /* mark */ = {
 			isa = PBXGroup;
 			children = (
+				1FB03CEA28CA5DD5003F9D09 /* Info.plist */,
 				1F7B44D728BB88E400A213E3 /* markApp.swift */,
 				1F7B44D928BB88E400A213E3 /* ContentView.swift */,
 				1F7B44DB28BB88E500A213E3 /* Assets.xcassets */,
 				1F7B44E028BB88E500A213E3 /* mark.entitlements */,
 				1F7B44DD28BB88E500A213E3 /* Preview Content */,
 				1F5702CD28BC02BB006F3309 /* Commands.swift */,
+				1F87D2E928CA742000A42D12 /* MarkState.swift */,
+				1F26DA1328CA762200C78E28 /* AppDelegate.swift */,
 			);
 			path = mark;
 			sourceTree = "<group>";
@@ -160,6 +168,8 @@
 			files = (
 				1F7B44DA28BB88E400A213E3 /* ContentView.swift in Sources */,
 				1F5702CE28BC02BB006F3309 /* Commands.swift in Sources */,
+				1F87D2EA28CA742100A42D12 /* MarkState.swift in Sources */,
+				1F26DA1428CA762200C78E28 /* AppDelegate.swift in Sources */,
 				1F7B44D828BB88E400A213E3 /* markApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -301,6 +311,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mark/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -330,6 +341,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = mark/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
