@@ -162,6 +162,8 @@ struct ContentView: View {
     @State private var localPreview: Bool = false
     
     
+    private let accentColor = Color.init(red: 247.0, green: 110.0, blue: 201.0, opacity: 1.0)
+    
     private let toastOptions = SimpleToastOptions(
         alignment: .bottom,
         hideAfter: 2.5
@@ -219,11 +221,13 @@ struct ContentView: View {
             HStack {
                 HStack{
                     Text(markState.toastMessage)
-                        .padding()
+                        .padding(.top,8)
+                        .padding(.bottom,8)
+                        .padding(.leading,12)
+                        .padding(.trailing,12)
                 }
-                .padding()
-                .background(Color.black.opacity(0.95))
-                .foregroundColor(Color.white)
+                .background(Color("Accent"))
+                .foregroundColor(Color.black)
                 .cornerRadius(6)
             }
             .padding()
