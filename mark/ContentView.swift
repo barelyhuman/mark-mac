@@ -75,7 +75,7 @@ struct ContentView: View {
                         if val.isEmpty
                         {return }
                         let url = URL(fileURLWithPath: val)
-                        markState.openFile(path: url)
+                        markState.openFile(fileurl: url)
                         return
                     }
                     .onReceive(markState.$content){(val) in

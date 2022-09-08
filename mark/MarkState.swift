@@ -45,12 +45,12 @@ public class MarkState: ObservableObject {
         self.filePath = url
     }
     
-    func openFile(path:URL){
+    func openFile(fileurl:URL){
         do {
-            self.filePath = path.absoluteString
-            self.savePath = path.absoluteString
-            self.filename = path.lastPathComponent
-            self.content = try String(contentsOf: path, encoding: .utf8)
+            self.filePath = fileurl.path
+            self.savePath = fileurl.path
+            self.filename = fileurl.lastPathComponent
+            self.content = try String(contentsOf: fileurl, encoding: .utf8)
         }catch{
             print(error)
         }
@@ -62,7 +62,7 @@ public class MarkState: ObservableObject {
         panel.canChooseDirectories = false
         if panel.runModal() == .OK {
             if let fileurl = panel.url {
-                self.openFile(path: fileurl)
+                self.openFile(fileurl:fileurl)
             }
         }
     }
@@ -109,11 +109,8 @@ public class MarkState: ObservableObject {
     
     func writeFileToSavePath() {
         do {
-            
             try self.content.write(to: URL(fileURLWithPath: savePath), atomically: true, encoding: .utf8)
-            
             self.showToast(message:"File Saved")
-            
         }catch{
             print(error)
         }
