@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-
 class AppDelegate: NSObject, NSApplicationDelegate,ObservableObject {
     @Published var fileToOpen = ""
     func application(_ application: NSApplication, open urls: [URL]) {
