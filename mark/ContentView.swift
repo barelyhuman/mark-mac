@@ -53,7 +53,7 @@ struct ContentView: View {
     private let accentColor = Color.init(red: 247.0, green: 110.0, blue: 201.0, opacity: 1.0)
     
     private let toastOptions = SimpleToastOptions(
-        alignment: .bottom,
+        alignment: .bottomTrailing,
         hideAfter: 2.5
     )
     
@@ -122,7 +122,7 @@ struct ContentView: View {
                         .padding(.trailing,12)
                 }
                 .background(Color("Accent"))
-                .foregroundColor(Color.black)
+                .foregroundColor(Color("OnAccent"))
                 .cornerRadius(6)
             }
             .padding()
