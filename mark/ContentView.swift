@@ -37,21 +37,13 @@ var defaultText:String = """
 You can type in markdown here
 """
 
-
-
 struct ContentView: View {
-    @StateObject var markState: MarkState
-    @State var filename = "Untitled.md"
-    @State var input: String = ""
+    @Binding var document: MarkdownFile
+    var fileUrl: URL?
     @StateObject var appDelegate: AppDelegate
-    
-    // duplicated local state to make sure the animation timing
-    // syncs with the one from the above observable
-    @State private var localPreview: Bool = false
-    
-    
-    private let accentColor = Color.init(red: 247.0, green: 110.0, blue: 201.0, opacity: 1.0)
-    
+    @StateObject var appState: MarkState
+
+
     private let toastOptions = SimpleToastOptions(
         alignment: .bottomTrailing,
         hideAfter: 2.5
@@ -59,63 +51,52 @@ struct ContentView: View {
     
     
     var body: some View {
-        // overall horizontal split stack
-        HStack(alignment:.top,spacing: 0) {
-            VStack
-            {
-                TextEditor(
-                    text: $input
-                )
-                    .font(Font.custom("Hermit", size: 13.5))
-                    .padding(10)
-                    .onChange(of: input) { newValue in
-                        markState.updateContent(content: newValue)
-                    }
-                    .onReceive(appDelegate.$fileToOpen){(val) in
-                        if val.isEmpty
-                        {return }
-                        let url = URL(fileURLWithPath: val)
-                        markState.openFile(fileurl: url)
-                        return
-                    }
-                    .onReceive(markState.$content){(val) in
-                        if val == input {return}
-                        input = val
-                        return
-                    }
-                //TODO: add in options to select font in settings
+        VStack {
+            if let data = fileUrl?.lastPathComponent {
+                Text(data).foregroundColor(Color("Subtle"))
+                    .padding()
+                    .padding(.bottom,2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            .frame(minWidth: 0, maxWidth: .infinity)
-            
-            
-            if localPreview {
-                ScrollView{
-                    VStack {
-                        Markdown(
-                            markState.content
-                        ).markdownStyle(
-                            MarkdownStyle(
-                                font: .custom("Hermit", size: 13.5),
-                                measurements: .init(
-                                    codeFontScale: 0.95,
-                                    headingSpacing: 0.5
+            HStack(alignment:.top,spacing: 0) {
+                VStack
+                {
+                    
+                    TextEditor(
+                        text: $document.text
+                    )
+                        .font(Font.custom("Hermit", size: 13.5))
+                        .padding(10)
+                }
+                .frame(minWidth: 0, maxWidth: .infinity,alignment: .leading)
+                
+                
+                if appState.preview {
+                    ScrollView{
+                        VStack {
+                            Markdown(
+                                document.text
+                            ).markdownStyle(
+                                MarkdownStyle(
+                                    font: .custom("Hermit", size: 13.5),
+                                    measurements: .init(
+                                        codeFontScale: 0.95,
+                                        headingSpacing: 0.5
+                                    )
                                 )
                             )
-                        )
-                            .padding(10)
+                                .padding(10)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity)
                     }
-                    .frame(minWidth: 0, maxWidth: .infinity)
+                    .transition(.sameEdgeSlide)
                 }
-                .transition(.sameEdgeSlide)
             }
         }
-        .onReceive(markState.$preview){ (val) in
-            localPreview = val
-        }
-        .simpleToast(isPresented: $markState.showToast, options: toastOptions) {
+        .simpleToast(isPresented: $appState.showToast, options: toastOptions) {
             HStack {
                 HStack{
-                    Text(markState.toastMessage)
+                    Text(appState.toastMsg)
                         .padding(.top,8)
                         .padding(.bottom,8)
                         .padding(.leading,12)
@@ -134,7 +115,7 @@ struct ContentView: View {
             }
             ToolbarItem {
                 Button("Toggle Preview") {
-                    markState.togglePreview()
+                    appState.togglePreview()
                 }
             }
         }
