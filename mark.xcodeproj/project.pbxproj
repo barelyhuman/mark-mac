@@ -314,8 +314,8 @@
 				DEVELOPMENT_TEAM = VSP8DEYEKA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mark/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mark;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;
@@ -346,8 +346,8 @@
 				DEVELOPMENT_TEAM = VSP8DEYEKA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = mark/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Mark;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_UISupportsDocumentBrowser = YES;

@@ -5,4 +5,15 @@ platform :ios do
   lane :build do
     gym
   end
+
+  desc "Update version"
+  lane :sync_version do 
+    version_file_fd = File.open("../.commitlog.release")
+    version_file_data = version_file_fd.read
+    version_file_fd.close
+    increment_version_number(
+      version_number: version_file_data.sub(/^v/, '')
+    )
+  end
+
 end
