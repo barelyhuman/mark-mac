@@ -4,8 +4,6 @@ set -euxo pipefail
 
 rm -rf ./build
 
-rbenv local
-
 bundle exec fastlane build
 
 VERSION=$(cat .commitlog.release | xargs)
